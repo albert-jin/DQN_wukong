@@ -98,8 +98,8 @@ class DQN(object):
         action_batch = torch.tensor(action_batch).to(dtype=torch.float).to("mps")
         # print(action_batch.shape)
         # print(action_batch.dtype)
-
-        Q_action = torch.sum(Q_value_batch * action_batch, dim=1)
+        Q_eval = self.eval_net(torch.tensor(state_batch).to(dtype=torch.float).to("mps"))
+        Q_action = torch.sum(Q_eval * action_batch, dim=1)
         y_batch = torch.tensor(y_batch).to(dtype=torch.float).to("mps")
         print(y_batch.shape)
         loss = self.loss(Q_action, y_batch)
