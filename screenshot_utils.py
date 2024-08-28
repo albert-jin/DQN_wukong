@@ -15,16 +15,16 @@ def select_screen_region():
     返回:
         tuple: 选定区域的左上角坐标 (x, y) 和尺寸 (width, height)。
     """
-    print("请将光标移动到选定区域的左上角，按下 '空格' 键。")
+    print("请将光标移动到选定区域的左上角，按下 'capslock' 或 'f7' 键。")
     while True:
-        if keyboard.is_pressed('space'):
+        if keyboard.is_pressed('capslock') or keyboard.is_pressed('f7'):
             start_x, start_y = pyautogui.position()
             print(f"左上角位置已记录: ({start_x}, {start_y})")
             break
     time.sleep(1)
-    print("请将光标移动到选定区域的右下角，按下 '空格' 键。")
+    print("请将光标移动到选定区域的右下角，按下 'capslock' 或 'f7' 键。")
     while True:
-        if keyboard.is_pressed('space'):
+        if keyboard.is_pressed('capslock') or keyboard.is_pressed('f7'):
             end_x, end_y = pyautogui.position()
             print(f"右下角位置已记录: ({end_x}, {end_y})")
             break
@@ -54,6 +54,7 @@ def grab_game_screen(x=None, y=None, width=None, height=None):
     if x is None and y is None and width is None and height is None and g_flag is False:
         x, y, width, height = select_screen_region()
         g_x, g_y, g_width, g_height = x, y, width, height
+        print("g_x, g_y, g_width, g_height:", x, y, width, height)
         g_flag = True
         # 截取屏幕区域的图像
         screenshot = pyautogui.screenshot(region=(g_x, g_y, g_width, g_height))
@@ -63,6 +64,8 @@ def grab_game_screen(x=None, y=None, width=None, height=None):
     else:
         # 截取屏幕区域的图像
         screenshot = pyautogui.screenshot(region=(x, y, width, height))
+        g_x, g_y, g_width, g_height = x, y, width, height
+        g_flag = True
 
     # 将 PIL 图像转换为 NumPy 数组
     frame = np.array(screenshot)
